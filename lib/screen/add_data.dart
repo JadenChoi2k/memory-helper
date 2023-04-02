@@ -100,6 +100,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
             ],
           ),
         ),
+        const SizedBox(height: 8.0),
         SizedBox(
           width: double.infinity,
           child: TextButton(
@@ -120,46 +121,52 @@ class _AddDataScreenState extends State<AddDataScreen> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Row(
+          child: Center(
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 680),
+              child: Column(
                 children: [
-                  const Text('그룹 이름:', style: TextStyle(fontSize: 20.0)),
-                  const SizedBox(width: 16.0),
-                  Expanded(
-                    child: TextField(
-                      onChanged: (val) => groupName = val,
+                  Row(
+                    children: [
+                      const Text('그룹 이름:', style: TextStyle(fontSize: 20.0)),
+                      const SizedBox(width: 16.0),
+                      Expanded(
+                        child: TextField(
+                          onChanged: (val) => groupName = val,
+                        ),
+                      ),
+                    ],
+                  ),
+                  ...List.generate(subjectNames.length, subjectSection),
+                  const SizedBox(height: 8.0),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton(
+                      onPressed: () => setState(
+                        () {
+                          subjectNames.add('');
+                          problems.add([]);
+                        },
+                      ),
+                      child: const Text('주제 추가'),
+                    ),
+                  ),
+                  const SizedBox(height: 8.0),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        final generatedGroup = generateGroup();
+                        manager.addGroup(generatedGroup);
+                        manager.save();
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('제출!'),
                     ),
                   ),
                 ],
               ),
-              ...List.generate(subjectNames.length, subjectSection),
-              const SizedBox(height: 8.0),
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton(
-                  onPressed: () => setState(
-                    () {
-                      subjectNames.add('');
-                      problems.add([]);
-                    },
-                  ),
-                  child: const Text('주제 추가'),
-                ),
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    final generatedGroup = generateGroup();
-                    manager.addGroup(generatedGroup);
-                    manager.save();
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('제출!'),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),

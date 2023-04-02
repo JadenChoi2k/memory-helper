@@ -41,50 +41,53 @@ class SubjectSelectScreen extends StatelessWidget {
     final controller = TextEditingController(
       text: subject.problems.length.toString(),
     );
-    return ListButton(
-      title: subject.name,
-      onPressed: () {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('개수를 입력해주세요'),
-            content: TextField(
-              controller: controller,
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  final num = int.parse(controller.value.text);
-                  if (num <= 0) {
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: ListButton(
+        title: subject.name,
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('개수를 입력해주세요'),
+              content: TextField(
+                controller: controller,
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    final num = int.parse(controller.value.text);
+                    if (num <= 0) {
+                      Navigator.of(context).pop();
+                      showDialog(
+                        context: context,
+                        builder: (context) => const AlertDialog(
+                          title: Text('올바른 개수를 입력해주세요'),
+                        ),
+                      );
+                      return;
+                    }
                     Navigator.of(context).pop();
-                    showDialog(
-                      context: context,
-                      builder: (context) => const AlertDialog(
-                        title: Text('올바른 개수를 입력해주세요'),
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) {
+                          return ProblemSolveScreen(
+                            title: subject.name,
+                            problemSet: generateProblemSet(subject, num),
+                          );
+                        },
                       ),
                     );
-                    return;
-                  }
-                  Navigator.of(context).pop();
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) {
-                        return ProblemSolveScreen(
-                          title: subject.name,
-                          problemSet: generateProblemSet(subject, num),
-                        );
-                      },
-                    ),
-                  );
-                },
-                child: const Text('확인'),
-              ),
-            ],
-          ),
-        );
-      },
+                  },
+                  child: const Text('확인'),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -94,10 +97,14 @@ class SubjectSelectScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('주제 선택'),
       ),
-      body: Column(
-        children: [group.wholeSubject, ...group.subjects]
-            .map((e) => challengeButton(context, e))
-            .toList(),
+      body: SizedBox(
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [group.wholeSubject, ...group.subjects]
+              .map((e) => challengeButton(context, e))
+              .toList(),
+        ),
       ),
     );
   }

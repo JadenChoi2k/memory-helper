@@ -23,20 +23,21 @@ class Manager {
   }
 
   static Future<void> load() async {
-    print('asdasdasd');
     final ls = LocalStorage('data.json');
-    final r = await ls.ready;
     final groups = ls.getItem('groups');
     final history = ls.getItem('history');
-    print('ready $r');
-    print('groups = $groups');
-    print('history = $history');
-    print('key = ${ls.getItem('key')}');
     if (groups == null || history == null) {
       _instance = Manager._(groups: [], history: History.empty());
       return;
     }
-    _instance = Manager._(groups: groups, history: history);
+    final List<Group> parseGroup = groups.map<Group>((json) {
+      final group = Group.fromJson(json);
+      return group;
+    }).toList();
+    _instance = Manager._(
+      groups: parseGroup,
+      history: History.fromJson(history),
+    );
   }
 
   void save() async {
@@ -45,9 +46,7 @@ class Manager {
     await Future.wait([
       ls.setItem('groups', groups),
       ls.setItem('history', history),
-      ls.setItem('key', 'value'),
     ]);
-    print('saved $groups and $history');
   }
 
   void addGroup(Group group) => groups.add(group);

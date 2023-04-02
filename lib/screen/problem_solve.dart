@@ -58,6 +58,7 @@ class _ProblemSolveScreenState extends State<ProblemSolveScreen> {
                 onChanged: (val) => answers[pIndex] = val,
               ),
             ),
+            const SizedBox(height: 8.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

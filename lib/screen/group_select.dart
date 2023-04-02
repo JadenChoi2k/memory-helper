@@ -10,11 +10,14 @@ class GroupSelectScreen extends StatelessWidget {
   GroupSelectScreen({Key? key}) : super(key: key);
 
   Widget groupButton(BuildContext context, Group group) {
-    return ListButton(
-      title: group.name,
-      onPressed: () => Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (_) => SubjectSelectScreen(group: group),
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: ListButton(
+        title: group.name,
+        onPressed: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => SubjectSelectScreen(group: group),
+          ),
         ),
       ),
     );
@@ -26,10 +29,14 @@ class GroupSelectScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('그룹 선택'),
       ),
-      body: Column(
-        children: [manager.wholeGroup, ...manager.groups]
-            .map((e) => groupButton(context, e))
-            .toList(),
+      body: SizedBox(
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [manager.wholeGroup, ...manager.groups]
+              .map((e) => groupButton(context, e))
+              .toList(),
+        ),
       ),
     );
   }

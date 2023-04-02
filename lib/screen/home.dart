@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:memory_helper/component/menu_button.dart';
 import 'package:memory_helper/screen/add_data.dart';
 import 'package:memory_helper/screen/group_select.dart';
 
@@ -29,38 +30,26 @@ class HomeScreen extends StatelessWidget {
           children: [
             title,
             const SizedBox(height: 16.0),
-            SizedBox(
-              width: 160,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => GroupSelectScreen(),
-                  ),
+            MenuButton(
+              title: '문제 풀기',
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => GroupSelectScreen(),
                 ),
-                child: buttonText('문제 풀기'),
               ),
             ),
-            // const SizedBox(height: 4.0),
-            // SizedBox(
-            //   width: 160,
-            //   height: 50,
-            //   child: ElevatedButton(
-            //     onPressed: () {},
-            //     child: buttonText('둘러보기'),
-            //   ),
-            // ),
             const SizedBox(height: 4.0),
-            SizedBox(
-              width: 160,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const AddDataScreen(),
-                  ),
+            MenuButton(
+              title: '둘러보기',
+              onPressed: () {},
+            ),
+            const SizedBox(height: 4.0),
+            MenuButton(
+              title: '데이터 추가',
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const AddDataScreen(),
                 ),
-                child: buttonText('데이터 추가'),
               ),
             ),
           ],
