@@ -98,7 +98,7 @@ class _SubjectProblemsScreenState extends State<SubjectProblemsScreen> {
       appBar: AppBar(
         title: Text('${widget.groupName} > ${widget.subjectName} > 문제들'),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           children: [
             ...manager

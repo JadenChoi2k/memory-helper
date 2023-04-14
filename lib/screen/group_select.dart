@@ -31,11 +31,13 @@ class GroupSelectScreen extends StatelessWidget {
       ),
       body: SizedBox(
         width: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [manager.wholeGroup, ...manager.groups]
-              .map((e) => groupButton(context, e))
-              .toList(),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [manager.wholeGroup, ...manager.groups]
+                .map((e) => groupButton(context, e))
+                .toList(),
+          ),
         ),
       ),
     );

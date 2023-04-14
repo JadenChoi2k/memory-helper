@@ -19,10 +19,10 @@ class _GroupsScreenState extends State<GroupsScreen> {
       appBar: AppBar(
         title: const Text('문제 그룹'),
       ),
-      body: Center(
-        child: manager.groups.isEmpty
-            ? const Text('데이터가 없습니다')
-            : Column(
+      body: manager.groups.isEmpty
+          ? const Text('데이터가 없습니다')
+          : SingleChildScrollView(
+              child: Column(
                 children: manager.groups
                     .map(
                       (e) => Padding(
@@ -64,7 +64,7 @@ class _GroupsScreenState extends State<GroupsScreen> {
                     )
                     .toList(),
               ),
-      ),
+            ),
     );
   }
 }

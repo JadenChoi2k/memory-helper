@@ -99,11 +99,13 @@ class SubjectSelectScreen extends StatelessWidget {
       ),
       body: SizedBox(
         width: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [group.wholeSubject, ...group.subjects]
-              .map((e) => challengeButton(context, e))
-              .toList(),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [group.wholeSubject, ...group.subjects]
+                .map((e) => challengeButton(context, e))
+                .toList(),
+          ),
         ),
       ),
     );

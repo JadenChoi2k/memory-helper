@@ -58,7 +58,7 @@ class _GroupSubjectsScreenState extends State<GroupSubjectsScreen> {
       appBar: AppBar(
         title: Text('${widget.groupName} 주제들'),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           children: [
             ...manager.findGroupByName(widget.groupName).subjects.map(
