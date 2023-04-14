@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:memory_helper/component/menu_button.dart';
 import 'package:memory_helper/screen/add_data.dart';
 import 'package:memory_helper/screen/group_select.dart';
+import 'package:memory_helper/screen/groups.dart';
 
 class HomeScreen extends StatelessWidget {
   static const buttonTextStyle = TextStyle(
@@ -41,7 +42,11 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 4.0),
             MenuButton(
               title: '둘러보기',
-              onPressed: () {},
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => GroupsScreen(),
+                ),
+              ),
             ),
             const SizedBox(height: 4.0),
             MenuButton(

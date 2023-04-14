@@ -1,10 +1,13 @@
 import 'package:localstorage/localstorage.dart';
+import 'package:logger/logger.dart';
 import 'package:memory_helper/model/result.dart';
+import 'package:memory_helper/model/subject.dart';
 import 'group.dart';
 import 'history.dart';
 
 class Manager {
   static Manager? _instance;
+  static Logger logger = Logger();
   final List<Group> groups;
   final History history;
 
@@ -22,13 +25,20 @@ class Manager {
     return ret;
   }
 
-  static Future<void> load() async {
+  Group findGroupByName(String groupName) {
+    return groups.firstWhere((element) => element.name == groupName);
+  }
+
+  static Future<Manager> load() async {
     final ls = LocalStorage('data.json');
+    await ls.ready;
+    logger.i('load local storage: $ls');
     final groups = ls.getItem('groups');
     final history = ls.getItem('history');
     if (groups == null || history == null) {
+      logger.i('returns initial manager');
       _instance = Manager._(groups: [], history: History.empty());
-      return;
+      return _instance!;
     }
     final List<Group> parseGroup = groups.map<Group>((json) {
       final group = Group.fromJson(json);
@@ -38,15 +48,17 @@ class Manager {
       groups: parseGroup,
       history: History.fromJson(history),
     );
+    return _instance!;
   }
 
-  void save() async {
+  Future<void> save() async {
     final ls = LocalStorage('data.json');
     await ls.ready;
     await Future.wait([
       ls.setItem('groups', groups),
       ls.setItem('history', history),
     ]);
+    logger.i('saved data');
   }
 
   void addGroup(Group group) => groups.add(group);

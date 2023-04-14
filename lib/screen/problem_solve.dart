@@ -20,6 +20,7 @@ class ProblemSolveScreen extends StatefulWidget {
 }
 
 class _ProblemSolveScreenState extends State<ProblemSolveScreen> {
+  final FocusNode answerFocusNode = FocusNode();
   final controller = TextEditingController();
   final List<String> answers = [];
   int pIndex = 0;
@@ -36,6 +37,26 @@ class _ProblemSolveScreenState extends State<ProblemSolveScreen> {
   void moveTo(int page) {
     controller.text = answers[page];
     setState(() => pIndex = page);
+    focusAnswerField();
+  }
+
+  void focusAnswerField() {
+    FocusScope.of(context).requestFocus(answerFocusNode);
+  }
+
+  void submit() {
+    final result = widget.problemSet.solve(answers);
+    final manager = Manager();
+    manager.addHistory(result);
+    manager.save();
+    Navigator.of(context).pop();
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => ResultScreen(
+          result: result,
+        ),
+      ),
+    );
   }
 
   @override
@@ -54,8 +75,15 @@ class _ProblemSolveScreenState extends State<ProblemSolveScreen> {
               width: 240.0,
               child: TextField(
                 controller: controller,
+                focusNode: answerFocusNode,
                 decoration: const InputDecoration(hintText: '정답을 입력해주세요'),
                 onChanged: (val) => answers[pIndex] = val,
+                onSubmitted: (val) {
+                  if (pIndex == widget.problemSet.problems.length - 1) {
+                    return submit();
+                  }
+                  moveTo(pIndex + 1);
+                },
               ),
             ),
             const SizedBox(height: 8.0),
@@ -82,20 +110,7 @@ class _ProblemSolveScreenState extends State<ProblemSolveScreen> {
                   ),
                 if (isLast)
                   OutlinedButton(
-                    onPressed: () {
-                      final result = widget.problemSet.solve(answers);
-                      final manager = Manager();
-                      manager.addHistory(result);
-                      manager.save();
-                      Navigator.of(context).pop();
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => ResultScreen(
-                            result: result,
-                          ),
-                        ),
-                      );
-                    },
+                    onPressed: submit,
                     child: const Text(
                       '제출!',
                       style: TextStyle(color: Colors.black),

@@ -23,6 +23,15 @@ class Group {
     );
   }
 
+  Subject findSubjectByName(String subjectName) {
+    return subjects.firstWhere((s) => s.name == subjectName);
+  }
+
+  void addSubject(Subject subject) => subjects.add(subject);
+
+  void removeSubject(String subjectName) =>
+      subjects.removeWhere((s) => s.name == subjectName);
+
   Group merge(Group group) {
     final Map<String, Subject> subjectMap = {};
     for (final subject in subjects + group.subjects) {

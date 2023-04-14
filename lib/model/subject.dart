@@ -18,4 +18,12 @@ class Subject {
   Subject merge(Subject subject) {
     return Subject(name: name, problems: problems + subject.problems);
   }
+
+  void addProblem(String q, String a) {
+    problems.add(Problem(question: q, answer: a));
+  }
+
+  void removeProblemByQuestion(String q) {
+    problems.removeWhere((p) => p.question == q);
+  }
 }
