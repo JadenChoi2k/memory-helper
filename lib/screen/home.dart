@@ -3,6 +3,7 @@ import 'package:memory_helper/component/menu_button.dart';
 import 'package:memory_helper/screen/add_data.dart';
 import 'package:memory_helper/screen/group_select.dart';
 import 'package:memory_helper/screen/groups.dart';
+import 'package:memory_helper/screen/history_list.dart';
 
 class HomeScreen extends StatelessWidget {
   static const buttonTextStyle = TextStyle(
@@ -45,6 +46,15 @@ class HomeScreen extends StatelessWidget {
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (_) => GroupsScreen(),
+                ),
+              ),
+            ),
+            const SizedBox(height: 4.0),
+            MenuButton(
+              title: '기록',
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => HistoryListScreen(),
                 ),
               ),
             ),

@@ -59,53 +59,57 @@ class _GroupSubjectsScreenState extends State<GroupSubjectsScreen> {
         title: Text('${widget.groupName} 주제들'),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            ...manager.findGroupByName(widget.groupName).subjects.map(
-                  (e) => Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: ListButton(
-                      title: e.name,
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => SubjectProblemsScreen(
-                            groupName: widget.groupName,
-                            subjectName: e.name,
+        child: SizedBox(
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ...manager.findGroupByName(widget.groupName).subjects.map(
+                    (e) => Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: ListButton(
+                        title: e.name,
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => SubjectProblemsScreen(
+                              groupName: widget.groupName,
+                              subjectName: e.name,
+                            ),
                           ),
                         ),
-                      ),
-                      postfix: ElevatedButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text('삭제하시겠습니까?'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    group.removeSubject(e.name);
-                                    manager.save();
-                                    setState(() {});
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('확인'),
-                                )
-                              ],
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(primary: Colors.red),
-                        child: Text('삭제'),
+                        postfix: ElevatedButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('삭제하시겠습니까?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      group.removeSubject(e.name);
+                                      manager.save();
+                                      setState(() {});
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('확인'),
+                                  )
+                                ],
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(primary: Colors.red),
+                          child: Text('삭제'),
+                        ),
                       ),
                     ),
                   ),
-                ),
-            const SizedBox(height: 12.0),
-            ElevatedButton(
-              onPressed: addSubjectPrompt,
-              child: const Text('주제 추가'),
-            )
-          ],
+              const SizedBox(height: 12.0),
+              ElevatedButton(
+                onPressed: addSubjectPrompt,
+                child: const Text('주제 추가'),
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -30,7 +30,7 @@ class Manager {
   }
 
   static Future<Manager> load() async {
-    final ls = LocalStorage('data.json');
+    final ls = LocalStorage('./data.json');
     await ls.ready;
     logger.i('load local storage: $ls');
     final groups = ls.getItem('groups');
@@ -52,7 +52,7 @@ class Manager {
   }
 
   Future<void> save() async {
-    final ls = LocalStorage('data.json');
+    final ls = LocalStorage('./data.json');
     await ls.ready;
     await Future.wait([
       ls.setItem('groups', groups),

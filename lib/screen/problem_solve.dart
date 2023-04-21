@@ -45,7 +45,7 @@ class _ProblemSolveScreenState extends State<ProblemSolveScreen> {
   }
 
   void submit() {
-    final result = widget.problemSet.solve(answers);
+    final result = widget.problemSet.solve(answers, title: widget.title);
     final manager = Manager();
     manager.addHistory(result);
     manager.save();
@@ -69,6 +69,7 @@ class _ProblemSolveScreenState extends State<ProblemSolveScreen> {
           children: [
             ProblemCard(
               num: pIndex + 1,
+              wholeSize: widget.problemSet.problems.length,
               content: widget.problemSet.problems[pIndex].question,
             ),
             SizedBox(

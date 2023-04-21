@@ -1,6 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:memory_helper/component/problem_card.dart';
+import 'package:memory_helper/model/problem_set.dart';
 import 'package:memory_helper/model/result.dart';
+import 'package:intl/intl.dart';
+import 'package:memory_helper/screen/problem_solve.dart';
 
 class ResultScreen extends StatefulWidget {
   final Result result;
@@ -13,12 +18,37 @@ class ResultScreen extends StatefulWidget {
 class _ResultScreenState extends State<ResultScreen> {
   int pIndex = -1;
 
+  void correctionNote() {
+    final incorrectList = widget.result.incorrectList;
+    if (incorrectList.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+          title: Text('모두 맞았습니다. 오답 노트는 필요 없습니다.'),
+        ),
+      );
+      return;
+    }
+    Navigator.of(context).pop();
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) {
+          return ProblemSolveScreen(
+            title: '${'${widget.result.title} '}오답 노트',
+            problemSet: ProblemSet(problems: incorrectList..shuffle()),
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final score = widget.result.score;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('결과'),
+        title: Text(
+            '${DateFormat('y/M/d hh:mm').format(widget.result.answerAt)} 결과'),
       ),
       body: Center(
         child: pIndex < 0
@@ -37,6 +67,14 @@ class _ResultScreenState extends State<ResultScreen> {
                     onPressed: () => setState(() => pIndex = 0),
                     child: const Text(
                       '결과 보기',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  const SizedBox(height: 4.0),
+                  OutlinedButton(
+                    onPressed: correctionNote,
+                    child: const Text(
+                      '오답 노트',
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
@@ -87,6 +125,16 @@ class _ResultScreenState extends State<ResultScreen> {
                           style: TextStyle(color: Colors.black),
                         ),
                       ),
+                      if (pIndex == widget.result.problems.length - 1) ...[
+                        const SizedBox(width: 4.0),
+                        OutlinedButton(
+                          onPressed: () => setState(() => pIndex = -1),
+                          child: const Text(
+                            '처음으로',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      ],
                       if (pIndex < widget.result.problems.length - 1) ...[
                         const SizedBox(width: 4.0),
                         OutlinedButton(

@@ -99,23 +99,27 @@ class _SubjectProblemsScreenState extends State<SubjectProblemsScreen> {
         title: Text('${widget.groupName} > ${widget.subjectName} > 문제들'),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            ...manager
-                .findGroupByName(widget.groupName)
-                .findSubjectByName(widget.subjectName)
-                .problems
-                .map(
-                  (e) => Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: problemWidget(e),
+        child: SizedBox(
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ...manager
+                  .findGroupByName(widget.groupName)
+                  .findSubjectByName(widget.subjectName)
+                  .problems
+                  .map(
+                    (e) => Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: problemWidget(e),
+                    ),
                   ),
-                ),
-            ElevatedButton(
-              onPressed: addProblemPrompt,
-              child: const Text('문제 추가'),
-            ),
-          ],
+              ElevatedButton(
+                onPressed: addProblemPrompt,
+                child: const Text('문제 추가'),
+              ),
+            ],
+          ),
         ),
       ),
     );

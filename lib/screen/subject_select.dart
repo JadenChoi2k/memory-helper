@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:memory_helper/component/list_button.dart';
 import 'package:memory_helper/model/group.dart';
+import 'package:memory_helper/model/problem.dart';
 import 'package:memory_helper/model/problem_set.dart';
 import 'package:memory_helper/model/subject.dart';
 import 'package:memory_helper/screen/problem_solve.dart';
@@ -18,23 +19,21 @@ class SubjectSelectScreen extends StatelessWidget {
 
   ProblemSet generateProblemSet(Subject subject, int n) {
     if (n >= subject.problems.length) {
-      return ProblemSet(problems: subject.problems);
+      return ProblemSet(problems: [...subject.problems]..shuffle());
     }
+    print('random');
     final rand = Random();
     final selected = List.generate(subject.problems.length, (index) => false);
+    final ret = <Problem>[];
     int cnt = 0;
     while (cnt < n) {
       final x = rand.nextInt(subject.problems.length);
       if (selected[x]) continue;
       selected[x] = true;
+      ret.add(subject.problems[x]);
       cnt++;
     }
-    return ProblemSet(
-      problems: List.generate(subject.problems.length, (index) => index)
-          .where((index) => selected[index])
-          .map((index) => subject.problems[index])
-          .toList(),
-    );
+    return ProblemSet(problems: ret);
   }
 
   Widget challengeButton(BuildContext context, Subject subject) {

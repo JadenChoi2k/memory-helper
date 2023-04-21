@@ -20,7 +20,7 @@ class _GroupsScreenState extends State<GroupsScreen> {
         title: const Text('문제 그룹'),
       ),
       body: manager.groups.isEmpty
-          ? const Text('데이터가 없습니다')
+          ? const Center(child: Text('데이터가 없습니다'))
           : SingleChildScrollView(
               child: Column(
                 children: manager.groups
